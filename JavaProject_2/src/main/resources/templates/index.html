@@ -85,7 +85,6 @@
             font-size: 18px;
         }
 
-        /* Títulos em negrito e preto */
         .label {
             font-weight: bold;
             color: grey;
@@ -110,17 +109,16 @@
 
         button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px #2980b9; /* Azul mais escuro para hover */
+            box-shadow: 0 4px 12px #2980b9;
         }
 
-        /* Estilo do botão deletar */
         button.deletar {
             background: linear-gradient(145deg, #c0392b, #e74c3c);
         }
 
         button.deletar:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px #a93226; /* Vermelho mais escuro para hover */
+            box-shadow: 0 4px 12px #a93226;
         }
     </style>
 </head>
@@ -136,11 +134,11 @@
             <input id="imdbRatingInput" type="number" step="0.1" min="0" max="10" />
             <button onclick="salvarImdbRating()">Salvar</button>
         </div>
-        <!-- Botão para listar todos os filmes -->
+
         <div style="margin-top: 12px;">
             <button onclick="mostrarTodosFilmes()" id="btnListarTodos">Listar Todos</button>
         </div>
-        <!-- Lista de filmes -->
+
         <ul id="listaTodosFilmes" style="margin-top: 16px; display: none; background: rgba(0,0,0,0.1); border-radius: 8px; padding: 12px;"></ul>
     </div>
 
@@ -162,10 +160,11 @@
 <script>
     let filmes = [];
     let filmeAtual = null;
+    const BASE_URL = window.location.origin;
 
     async function fetchFilmes() {
         try {
-            const response = await fetch("http://localhost:8080/filmes");
+            const response = await fetch(`${BASE_URL}/filmes`);
             if (!response.ok) throw new Error("Erro ao buscar filmes");
             filmes = await response.json();
         } catch (error) {
@@ -178,13 +177,10 @@
         filmeAtual = filme;
         document.getElementById("poster").src = filme.Poster || "";
         document.getElementById("poster").alt = filme.Title || "Poster do filme";
-
-        // Atualizar só o conteúdo dentro dos spans para manter os títulos fixos
         document.getElementById("titleValue").textContent = filme.Title || "N/A";
         document.getElementById("plotValue").textContent = filme.Plot || "N/A";
         document.getElementById("yearValue").textContent = filme.Year || "N/A";
         document.getElementById("typeValue").textContent = filme.Type || "N/A";
-
         document.getElementById("imdbRatingInput").value = filme.imdbRating || "";
     }
 
@@ -205,7 +201,7 @@
         if (!confirm(`Confirma a exclusão do filme "${filmeAtual.Title}"?`)) return;
 
         try {
-            const response = await fetch(`http://localhost:8080/filmes/${filmeAtual.id}`, {
+            const response = await fetch(`${BASE_URL}/filmes/${filmeAtual.id}`, {
                 method: "DELETE"
             });
             if (!response.ok) throw new Error("Erro ao deletar filme.");
@@ -241,7 +237,7 @@
         }
 
         try {
-            const response = await fetch(`http://localhost:8080/filmes/${filmeAtual.id}?imdbRating=${novoRating}`, {
+            const response = await fetch(`${BASE_URL}/filmes/${filmeAtual.id}?imdbRating=${novoRating}`, {
                 method: "PUT"
             });
             if (!response.ok) throw new Error("Erro ao salvar avaliação.");
