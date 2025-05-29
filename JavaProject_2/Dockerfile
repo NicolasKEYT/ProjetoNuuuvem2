@@ -1,27 +1,22 @@
-# Dockerfile
-
-FROM openjdk:21-jdk-slim
-
-# Set the working directory
+# 1) Build stage usando Maven oficial
+FROM maven:3.9.4-eclipse-temurin-21 AS builder
 WORKDIR /app
 
-# Copy the Maven wrapper and pom.xml
-COPY mvnw .
-COPY mvnw.cmd .
-COPY .mvn ./.mvn
+# Copia apenas o pom e o src para aproveitar cache
 COPY pom.xml .
+RUN mvn dependency:go-offline
 
-# Install Maven
-RUN chmod +x mvnw && ./mvnw dependency:go-offline
-
-# Copy the source code
 COPY src ./src
+RUN mvn package -DskipTests
 
-# Package the application
-RUN ./mvnw package -DskipTests
+# 2) Runtime stage
+FROM eclipse-temurin:21-jdk-slim
+WORKDIR /app
 
-# Expose the port the app runs on
+# Aqui copie o JAR gerado no builder
+COPY --from=builder /app/target/*.jar app.jar
+
 EXPOSE 8080
 
-# Command to run the application
-CMD ["java", "-jar", "target/JavaProject-0.0.1-SNAPSHOT.jar"]
+# Força binding em 0.0.0.0 para aceitar conexões externas
+ENTRYPOINT ["java","-jar","app.jar","--server.address=0.0.0.0","--server.port=8080"]
