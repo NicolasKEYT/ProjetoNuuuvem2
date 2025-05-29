@@ -11,11 +11,11 @@ COPY mvnw.cmd .
 COPY .mvn ./.mvn
 COPY pom.xml .
 
-# Copy the source code
-COPY src ./src
-
 # Install Maven
 RUN chmod +x mvnw && ./mvnw dependency:go-offline
+
+# Copy the source code
+COPY src ./src
 
 # Package the application
 RUN ./mvnw package -DskipTests
