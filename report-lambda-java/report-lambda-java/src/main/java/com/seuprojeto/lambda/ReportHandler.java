@@ -2,21 +2,24 @@ package com.seuprojeto.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.amazonaws.services.lambda.runtime.events.*;
-import java.net.http.*;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.net.URI;
-import com.fasterxml.jackson.databind.*;
-import java.util.*;
+// =====> Adicione esta linha:
+import java.util.Map;
 
 public class ReportHandler
-    implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+        implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     private static final HttpClient http = HttpClient.newHttpClient();
-    private static final ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public APIGatewayProxyResponseEvent handleRequest(
-        APIGatewayProxyRequestEvent event, Context context) {
+            APIGatewayProxyRequestEvent event,
+            Context context) {
 
         try {
             String base = System.getenv("API_BASE_URL");
@@ -24,22 +27,16 @@ public class ReportHandler
             HttpRequest req = HttpRequest.newBuilder(uri).GET().build();
             HttpResponse<String> resp = http.send(req, HttpResponse.BodyHandlers.ofString());
 
-            Filme[] filmes = mapper.readValue(resp.body(), Filme[].class);
-            Map<String,Object> stats = new HashMap<>();
-            stats.put("total", filmes.length);
-            double anoMedio = Arrays.stream(filmes)
-                                    .mapToInt(Filme::getAno)
-                                    .average().orElse(0);
-            stats.put("anoMedio", anoMedio);
-
             return new APIGatewayProxyResponseEvent()
-                .withStatusCode(200)
-                .withBody(mapper.writeValueAsString(stats));
+                    .withStatusCode(200)
+                    .withHeaders(Map.of("Content-Type", "application/json"))
+                    .withBody(resp.body());
 
         } catch (Exception e) {
             return new APIGatewayProxyResponseEvent()
-                .withStatusCode(500)
-                .withBody("{\"error\":\""+e.getMessage()+"\"}");
+                    .withStatusCode(500)
+                    .withHeaders(Map.of("Content-Type", "application/json"))
+                    .withBody("{\"error\":\"" + e.getMessage() + "\"}");
         }
     }
 }
