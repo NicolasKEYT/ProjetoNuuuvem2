@@ -1,5 +1,8 @@
 package com.seuprojeto.lambda;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Filme {
     private int id;
     private String titulo;
