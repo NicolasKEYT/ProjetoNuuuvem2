@@ -42,7 +42,7 @@ Construir imagem e rodar o container
 
 docker build -t java-filmes-app .
 
-docker run -p 8080:8080 java-filmes-app
+docker run -p 80:8080 java-filmes-app
 
 Acessar por: https://localhost:8080
 
