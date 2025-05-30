@@ -25,7 +25,7 @@ Pode deletar um filme do banco
 
 Exibe detalhes sobre o filme (sinopse titulo, ano e poster)
 ## 2. Arquitetura
-![DiagramaArq](https://github.com/user-attachments/assets/ff638aaa-e96c-4107-a34d-883fee8b7421)
+![DiagramaArq](https://github.com/user-attachments/assets/2e8ab5a4-319c-4b1b-919c-af794ab631d8)
 
 
 | Camada | Serviço | Descrição |
