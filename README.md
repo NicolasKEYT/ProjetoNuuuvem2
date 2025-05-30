@@ -47,4 +47,4 @@ docker run -p 8080:8080 java-filmes-app
 Acessar por: https://localhost:8080
 
 ## 4. Link do video 
-https://youtu.be/MTmSzl9LiWQ
+https://youtu.be/y7EkQ5kFXcw
