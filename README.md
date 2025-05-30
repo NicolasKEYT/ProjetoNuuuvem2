@@ -10,8 +10,20 @@
 
 
 ## 1. Visão geral
-<!-- Descreva rapidamente o domínio escolhido, por que foi selecionado e o que o CRUD faz. -->
+O domínio é um CRUD em SpringBoot que pega os dados da API OMDb e exibe filmes com "War" no nome, permitindo listar todos, atualizar notas, deletar e visualizar filmes salvos. Tema escolhido pois adoramos guerra 🤘.
 
+O Crud: 
+
+Importa os filmes do OMDb
+
+Lista os filmes salvos no banco
+Exibe um filme aleatório da lista
+
+Pode atualizar a nota do filme
+
+Pode deletar um filme do banco
+
+Exibe detalhes sobre o filme (sinopse titulo, ano e poster)
 ## 2. Arquitetura
 
 ![Diagrama](docs/arquitetura.png)
@@ -26,7 +38,10 @@
 
 ## 3. Como rodar localmente
 
-```bash
-cp .env.example .env         # configure variáveis
-docker compose up --build
-# API em http://localhost:3000
+Construir imagem e rodar o container
+
+docker build -t java-filmes-app .
+
+docker run -p 8080:8080 java-filmes-app
+
+Acessar por: https://localhost:8080
