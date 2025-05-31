@@ -30,11 +30,10 @@ Exibe detalhes sobre o filme (sinopse titulo, ano e poster)
 
 | Camada | Serviço | Descrição |
 |--------|---------|-----------|
-| Backend | ECS Fargate (ou EC2 + Docker) | API REST Node/Spring/… |
-| Banco   | Amazon RDS              | PostgreSQL / MySQL em grupo de segurança privado |
-| Gateway | Amazon API Gateway      | Rotas CRUD → ECS · `/report` → Lambda |
-| Função  | AWS Lambda              | Consome a API, gera estatísticas JSON |
-| CI/CD   | CodePipeline + GitHub   | push → build → ECR → deploy |
+| Backend | ECS Fargate (ou EC2 + Docker) | API REST Java21/Spring/… |
+| Banco   | Amazon RDS              | PostgreSQL / em grupo de segurança privado |
+| Gateway | Amazon API Gateway      | Rotas CRUD → EC2 · `/report` → Lambda |
+| Função  | AWS Lambda              | Consome a API, gera estatísticas JSON tradadas|
 
 ## 3. Como rodar localmente
 
